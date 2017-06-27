@@ -1,0 +1,24 @@
+language: php
+
+matrix:
+  include:
+    - php: 7.0
+    - php: 7.1
+    - php: nightly
+  allow_failures:
+    - php: nightly
+  fast_finish: true
+
+before_script:
+  - sudo apt-get update
+  - sudo apt-get install -y poppler-utils
+  - composer self-update
+  - composer update --no-interaction --prefer-dist
+  - pdfinfo -v
+
+script:
+  - vendor/bin/phpunit --verbose --coverage-clover=coverage.clover
+
+after_script:
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover

@@ -1,0 +1,26 @@
+{
+    "name": "php-pdfbox/php-pdfbox",
+    "type": "library",
+    "description": "PHP-Pdfbox",
+    "keywords": ["pdf", "pdfbox"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stephan Wentz",
+            "email": "stephan@wentz.it",
+            "homepage": "http://www.wentz.it/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Pdfbox\\": ""
+        }
+    },
+    "require": {
+        "php": "^7.1",
+        "alchemy/binary-driver": "^1.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "^6.2"
+    }
+}
