@@ -15,7 +15,7 @@ use Pdfbox\Driver\Pdfbox;
 use Pdfbox\Exception\FileNotFoundException;
 
 /**
- * PDF file
+ * PDF file.
  *
  * @author Stephan Wentz <sw@brainbits.net>
  */

@@ -49,6 +49,6 @@ anyone.
 page at a time for fast display on the Web.
 ";
 
-        return ($text);
+        return $text;
     }
 }

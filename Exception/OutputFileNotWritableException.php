@@ -16,8 +16,8 @@ namespace Pdfbox\Exception;
  */
 class OutputFileNotWritableException extends RuntimeException
 {
-    public static function create(string $outputFile): OutputFileNotWritableException
+    public static function create(string $outputFile): self
     {
-        return new OutputFileNotWritableException("Output file $outputFile not found.");
+        return new self("Output file $outputFile not found.");
     }
 }

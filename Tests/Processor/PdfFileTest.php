@@ -72,5 +72,4 @@ class PdfFileTest extends TestCase
     {
         return $this->prophesize(Pdfbox::class);
     }
-
 }

@@ -35,7 +35,7 @@ class ExtractTextCommand
     public function toArray(): array
     {
         if (!$this->inputFile) {
-            throw new InputFileMissingException("Input file missing.");
+            throw new InputFileMissingException('Input file missing.');
         }
 
         $data = $this->options;

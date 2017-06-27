@@ -16,8 +16,8 @@ namespace Pdfbox\Exception;
  */
 class InputFileNotFoundException extends RuntimeException
 {
-    public static function create(string $inputFile): InputFileNotFoundException
+    public static function create(string $inputFile): self
     {
-        return new InputFileNotFoundException("Input file $inputFile not found.");
+        return new self("Input file $inputFile not found.");
     }
 }

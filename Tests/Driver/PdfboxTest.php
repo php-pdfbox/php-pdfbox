@@ -61,7 +61,7 @@ class PdfboxTest extends TestCase
     {
         $logger = $this->createLogger();
         $logger->error(Argument::cetera())->shouldBeCalled();
-        $logger->info("pdfbox is available, version 2.0.6")->shouldBeCalled();
+        $logger->info('pdfbox is available, version 2.0.6')->shouldBeCalled();
         $logger->info(Argument::cetera())->shouldBeCalled();
 
         $pdfbox = Pdfbox::create($logger->reveal());

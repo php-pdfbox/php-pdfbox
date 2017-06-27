@@ -28,7 +28,7 @@ use Psr\Log\LoggerInterface;
 class Pdfbox extends AbstractBinary
 {
     /**
-     * @var boolean
+     * @var bool
      */
     private $isAvailable;
 
@@ -99,16 +99,16 @@ class Pdfbox extends AbstractBinary
     }
 
     /**
-     * Check availability
+     * Check availability.
      */
     public function isAvailable(): bool
     {
         if (null === $this->isAvailable) {
-            $listener = new class extends EventEmitter implements ListenerInterface {
+            $listener = new class() extends EventEmitter implements ListenerInterface {
                 public $output = '';
                 public function handle($type, $data)
                 {
-                    if ($type === "err") {
+                    if ($type === 'err') {
                         $this->output = $data;
                     }
                 }
@@ -133,7 +133,7 @@ class Pdfbox extends AbstractBinary
             } else {
                 $this->isAvailable = false;
 
-                $this->getProcessRunner()->getLogger()->warning("pdfbox is not available");
+                $this->getProcessRunner()->getLogger()->warning('pdfbox is not available');
             }
         }
 
