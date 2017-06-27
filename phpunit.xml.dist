@@ -17,9 +17,15 @@
     </testsuites>
 
     <filter>
-      <blacklist>
-        <directory>vendor</directory>
-      </blacklist>
+        <whitelist>
+            <directory>.</directory>
+            <exclude>
+                <file>.sami.php</file>
+                <directory>docs</directory>
+                <directory>vendor</directory>
+                <directory>tests</directory>
+            </exclude>
+        </whitelist>
     </filter>
 
 </phpunit>
