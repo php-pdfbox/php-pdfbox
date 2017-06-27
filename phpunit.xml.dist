@@ -23,7 +23,7 @@
                 <file>.sami.php</file>
                 <directory>docs</directory>
                 <directory>vendor</directory>
-                <directory>tests</directory>
+                <directory>Tests</directory>
             </exclude>
         </whitelist>
     </filter>
