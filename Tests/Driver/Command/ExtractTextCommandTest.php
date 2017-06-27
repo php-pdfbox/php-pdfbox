@@ -108,7 +108,7 @@ class ExtractTextCommandTest extends TestCase
             '-sort',
             '-startPage' => '3',
             __FILE__,
-            $tempFile
+            $tempFile,
         ], $result);
     }
 }
