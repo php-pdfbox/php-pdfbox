@@ -10,15 +10,15 @@ matrix:
   fast_finish: true
 
 before_script:
-  - sudo apt-get update
-  - sudo apt-get install -y poppler-utils
   - composer self-update
   - composer update --no-interaction --prefer-dist
-  - pdfinfo -v
+  - java -version
 
 script:
   - vendor/bin/phpunit --verbose --coverage-clover=coverage.clover
 
 after_script:
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+  - sh -c 'if [ $(phpenv version-name) = "7.1" ]; then wget https://scrutinizer-ci.com/ocular.phar && php ocular.phar code-coverage:upload --format=php-clover coverage.xml; fi;'
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
