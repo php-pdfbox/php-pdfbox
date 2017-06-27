@@ -12,8 +12,8 @@
 namespace Pdfbox\Exception;
 
 /**
- * Pdfbox executable not found exception.
+ * Pdfbox logic exception.
  */
-class ExecutableNotFoundException extends RuntimeException implements ExceptionInterface
+class LogicException extends \LogicException implements ExceptionInterface
 {
 }

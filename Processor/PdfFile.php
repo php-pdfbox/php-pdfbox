@@ -34,9 +34,9 @@ class PdfFile
 
         $command = $this->pdfbox->extractText()
             ->console()
-            ->setOption($inputFile);
+            ->inputFile($inputFile);
 
-        $output = $this->pdfbox->command($command->getOptions());
+        $output = $this->pdfbox->command($command->toArray());
 
         return $output;
     }
@@ -48,14 +48,14 @@ class PdfFile
         $command = $this->pdfbox->extractText()
             ->console()
             ->html()
-            ->setOption($inputFile);
+            ->inputFile($inputFile);
 
-        $output = $this->pdfbox->command($command->getOptions());
+        $output = $this->pdfbox->command($command->toArray());
 
         return $output;
     }
 
-    private function assertFileExists(string $inputFile): void
+    private function assertFileExists(string $inputFile)
     {
         if (!file_exists($inputFile)) {
             throw new FileNotFoundException("File $inputFile not found.");

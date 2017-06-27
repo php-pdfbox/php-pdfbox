@@ -11,35 +11,71 @@
 
 namespace Pdfbox\Driver\Command;
 
+use Pdfbox\Exception\InputFileMissingException;
+use Pdfbox\Exception\InputFileNotFoundException;
+use Pdfbox\Exception\OutputFileNotWritableException;
+
 /**
  * pdfbox ExtractText command.
  */
 class ExtractTextCommand
 {
     private $options;
+    private $inputFile;
+    private $outputFile;
 
     public function __construct()
     {
         $this->options = ['ExtractText'];
     }
 
-    public function setOption(string $key, ?string $value = null): self
+    /**
+     * @return mixed[]
+     */
+    public function toArray(): array
     {
-        if ($value !== null) {
-            $this->options[$key] = $value;
-        } else {
-            $this->options[] = $key;
+        if (!$this->inputFile) {
+            throw new InputFileMissingException("Input file missing.");
         }
+
+        $data = $this->options;
+        array_push($data, $this->inputFile);
+
+        if ($this->outputFile) {
+            array_push($data, $this->outputFile);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Set [output-text-file].
+     * The PDF document to use.
+     */
+    public function inputFile(string $inputFile): self
+    {
+        if (!file_exists($inputFile)) {
+            throw InputFileNotFoundException::create($inputFile);
+        }
+
+        $this->inputFile = $inputFile;
 
         return $this;
     }
 
     /**
-     * @return mixed[]
+     * Set -password <password>.
+     * The file to write the text to.
      */
-    public function getOptions(): array
+    public function outputFile(string $outputFile): self
     {
-        return $this->options;
+        if (!is_writable(dirname($outputFile))) {
+            throw OutputFileNotWritableException::create($outputFile);
+        }
+
+        $this->outputFile = $outputFile;
+
+        return $this;
     }
 
     /**
@@ -66,7 +102,7 @@ class ExtractTextCommand
      */
     public function console(): self
     {
-        return $this->setOption('-console');
+        return $this->setFlag('-console');
     }
 
     /**
@@ -75,7 +111,7 @@ class ExtractTextCommand
      */
     public function html(): self
     {
-        return $this->setOption('-html');
+        return $this->setFlag('-html');
     }
 
     /**
@@ -84,7 +120,7 @@ class ExtractTextCommand
      */
     public function sort(): self
     {
-        return $this->setOption('-sort');
+        return $this->setFlag('-sort');
     }
 
     /**
@@ -93,7 +129,7 @@ class ExtractTextCommand
      */
     public function ignoreBeads(): self
     {
-        return $this->setOption('-ignoreBeads');
+        return $this->setFlag('-ignoreBeads');
     }
 
     /**
@@ -102,7 +138,7 @@ class ExtractTextCommand
      */
     public function debug(): self
     {
-        return $this->setOption('-debug');
+        return $this->setFlag('-debug');
     }
 
     /**
@@ -121,5 +157,19 @@ class ExtractTextCommand
     public function endPage(int $endPage): self
     {
         return $this->setOption('-l', $endPage);
+    }
+
+    private function setOption(string $key, string $value): self
+    {
+        $this->options[$key] = $value;
+
+        return $this;
+    }
+
+    private function setFlag(string $key): self
+    {
+        $this->options[] = $key;
+
+        return $this;
     }
 }

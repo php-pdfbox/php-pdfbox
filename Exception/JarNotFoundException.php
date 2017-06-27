@@ -14,6 +14,6 @@ namespace Pdfbox\Exception;
 /**
  * Pdfbox jar not found exception.
  */
-class JarNotFoundException extends \RuntimeException implements ExceptionInterface
+class JarNotFoundException extends RuntimeException implements ExceptionInterface
 {
 }

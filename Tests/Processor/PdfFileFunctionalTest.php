@@ -9,6 +9,8 @@ use Psr\Log\LoggerInterface;
 
 class PdfFileFunctionalTest extends TestCase
 {
+    const TEST_FILE = __DIR__.'/../files/pdf-sample.pdf';
+
     public function testToText()
     {
         $pdfFile = new PdfFile(
@@ -19,7 +21,8 @@ class PdfFileFunctionalTest extends TestCase
                 ]
             )
         );
-        $text = $pdfFile->toText(__DIR__ . '/../files/pdf-sample.pdf');
+
+        $text = $pdfFile->toText(self::TEST_FILE);
 
         $this->assertNotEmpty($text);
         $this->assertEquals($this->createTextContent(), $text);
