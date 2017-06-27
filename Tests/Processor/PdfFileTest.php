@@ -9,6 +9,11 @@ use Pdfbox\Processor\PdfFile;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
+/**
+ * PdfFile test.
+ *
+ * @covers \Pdfbox\Processor\PdfFile
+ */
 class PdfFileTest extends TestCase
 {
     const TEST_FILE = __DIR__.'/../files/pdf-sample.pdf';

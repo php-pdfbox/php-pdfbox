@@ -149,7 +149,7 @@ class ExtractTextCommand
      */
     public function startPage(int $startPage): self
     {
-        return $this->setOption('-startPage', $startPage);
+        return $this->setOption('-startPage', (string) $startPage);
     }
 
     /**
@@ -158,7 +158,7 @@ class ExtractTextCommand
      */
     public function endPage(int $endPage): self
     {
-        return $this->setOption('-l', $endPage);
+        return $this->setOption('-endPage', (string) $endPage);
     }
 
     private function setOption(string $key, string $value): self
@@ -170,7 +170,9 @@ class ExtractTextCommand
 
     private function setFlag(string $key): self
     {
-        $this->options[] = $key;
+        if (array_search($key, $this->options) === false) {
+            $this->options[] = $key;
+        }
 
         return $this;
     }

@@ -7,6 +7,11 @@ use Pdfbox\Processor\PdfFile;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
+/**
+ * PdfFile functional test.
+ *
+ * @covers \Pdfbox\Processor\PdfFile
+ */
 class PdfFileFunctionalTest extends TestCase
 {
     const TEST_FILE = __DIR__.'/../files/pdf-sample.pdf';

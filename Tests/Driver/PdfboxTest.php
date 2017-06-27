@@ -3,6 +3,9 @@
 namespace Pdfbox\Tests\Driver;
 
 use Alchemy\BinaryDriver\Configuration;
+use Alchemy\BinaryDriver\ProcessBuilderFactory;
+use Alchemy\BinaryDriver\ProcessRunner;
+use Pdfbox\Driver\Command\ExtractTextCommand;
 use Pdfbox\Driver\Pdfbox;
 use Pdfbox\Exception\ExecutableNotFoundException;
 use Pdfbox\Exception\JarNotFoundException;
@@ -10,7 +13,13 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\ExecutableFinder;
+use Symfony\Component\Process\Process;
 
+/**
+ * Pdfbox test.
+ *
+ * @covers \Pdfbox\Driver\Pdfbox
+ */
 class PdfboxTest extends TestCase
 {
     public function setUp()
@@ -55,6 +64,43 @@ class PdfboxTest extends TestCase
         $this->expectException(JarNotFoundException::class);
 
         Pdfbox::create($this->createLogger()->reveal(), ['pdfbox.jar' => '/path/to/nowhere']);
+    }
+
+    public function testGetName()
+    {
+        $logger = $this->createLogger();
+
+        $pdfbox = Pdfbox::create($logger->reveal());
+
+        $result = $pdfbox->getName();
+
+        $this->assertSame('pdfbox', $result);
+    }
+
+    public function testExtractText()
+    {
+        $logger = $this->createLogger();
+
+        $pdfbox = Pdfbox::create($logger->reveal());
+
+        $result = $pdfbox->extractText();
+
+        $this->assertInstanceOf(ExtractTextCommand::class, $result);
+    }
+
+    public function testCommand()
+    {
+        $factory = $this->prophesize(ProcessBuilderFactory::class);
+        $factory->create(['-jar', null, 'test'])
+            ->shouldBeCalled()
+            ->willReturn(new Process(''));
+        $runner = $this->prophesize(ProcessRunner::class);
+        $logger = $this->createLogger();
+
+        $pdfbox = new Pdfbox($factory->reveal(), $logger->reveal(), new Configuration());
+        $pdfbox->setProcessRunner($runner->reveal());
+
+        $result = $pdfbox->command('test');
     }
 
     public function testIsAvailable()
