@@ -13,6 +13,7 @@ before_script:
   - composer self-update
   - composer update --no-interaction --prefer-dist
   - java -version
+  - java -jar pdfbox-app.jar 2>&1 | head -n 1
 
 script:
   - vendor/bin/phpunit --verbose --coverage-clover=coverage.clover
