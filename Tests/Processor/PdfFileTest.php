@@ -11,7 +11,7 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class PdfFileTest extends TestCase
 {
-    private const TEST_FILE = __DIR__.'/../files/pdf-sample.pdf';
+    const TEST_FILE = __DIR__.'/../files/pdf-sample.pdf';
 
     public function testToTextFromInvalid()
     {
