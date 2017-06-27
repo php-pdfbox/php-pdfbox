@@ -106,6 +106,7 @@ class Pdfbox extends AbstractBinary
         if (null === $this->isAvailable) {
             $listener = new class() extends EventEmitter implements ListenerInterface {
                 public $output = '';
+
                 public function handle($type, $data)
                 {
                     if ($type === 'err') {
