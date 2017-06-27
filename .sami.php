@@ -15,7 +15,6 @@ $iterator = Finder::create()
 
 return new Sami($iterator, array(
     'title'                => 'php-pdfbox API',
-    'theme'                => 'enhanced',
     'build_dir'            => __DIR__.'/docs/api',
     'cache_dir'            => __DIR__.'/docs/api/cache',
     'default_opened_level' => 2,
