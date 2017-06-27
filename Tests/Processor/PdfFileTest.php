@@ -11,6 +11,8 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 class PdfFileTest extends TestCase
 {
+    private const TEST_FILE = __DIR__.'/../files/pdf-sample.pdf';
+
     public function testToTextFromInvalid()
     {
         $this->expectException(FileNotFoundException::class);
@@ -27,12 +29,12 @@ class PdfFileTest extends TestCase
         $pdfbox = $this->createPdfbox();
         $pdfbox->extractText()
             ->willReturn(new ExtractTextCommand());
-        $pdfbox->command(['ExtractText', '-console', '/Users/swentz/Sites/controlling/pdfbox/Tests/Processor/../files/pdf-sample.pdf'])
+        $pdfbox->command(['ExtractText', '-console', self::TEST_FILE])
             ->shouldBeCalled()
             ->willReturn('testContent');
 
         $pdfFile = new PdfFile($pdfbox->reveal());
-        $text = $pdfFile->toText(__DIR__ . '/../files/pdf-sample.pdf');
+        $text = $pdfFile->toText(self::TEST_FILE);
 
         $this->assertNotEmpty($text);
     }
@@ -53,12 +55,12 @@ class PdfFileTest extends TestCase
         $pdfbox = $this->createPdfbox();
         $pdfbox->extractText()
             ->willReturn(new ExtractTextCommand());
-        $pdfbox->command(['ExtractText', '-console', '-html', '/Users/swentz/Sites/controlling/pdfbox/Tests/Processor/../files/pdf-sample.pdf'])
+        $pdfbox->command(['ExtractText', '-console', '-html', self::TEST_FILE])
             ->shouldBeCalled()
             ->willReturn('testContent');
 
         $pdfFile = new PdfFile($pdfbox->reveal());
-        $html = $pdfFile->toHtml(__DIR__ . '/../files/pdf-sample.pdf', sys_get_temp_dir());
+        $html = $pdfFile->toHtml(self::TEST_FILE, sys_get_temp_dir());
 
         $this->assertNotEmpty($html);
     }
