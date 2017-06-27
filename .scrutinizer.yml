@@ -1,11 +1,20 @@
 tools:
-    external_code_coverage:
-        timeout: 600    # Timeout in seconds.
+  external_code_coverage:
+    timeout: 600    # Timeout in seconds.
+
+checks:
+  php:
+    code_rating: true
+    duplication: true
+
+filter:
+  excluded_paths:
+    - tests/*
 
 coding_style:
-    php:
-        spaces:
-            around_operators:
-                concatenation: false
-            before_left_brace:
-                function: false
+  php:
+    spaces:
+      around_operators:
+        concatenation: false
+      before_left_brace:
+        function: false
