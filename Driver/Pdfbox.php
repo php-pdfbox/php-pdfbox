@@ -32,17 +32,11 @@ class Pdfbox extends AbstractBinary
      */
     private $isAvailable;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'pdfbox';
     }
 
-    /**
-     * @return ExtractTextCommand
-     */
     public function extractText(): ExtractTextCommand
     {
         return new ExtractTextCommand();

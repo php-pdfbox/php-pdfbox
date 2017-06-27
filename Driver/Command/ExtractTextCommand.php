@@ -49,7 +49,7 @@ class ExtractTextCommand
     }
 
     /**
-     * Set [output-text-file].
+     * Set <input-file>.
      * The PDF document to use.
      */
     public function inputFile(string $inputFile): self
@@ -64,7 +64,7 @@ class ExtractTextCommand
     }
 
     /**
-     * Set -password <password>.
+     * Set <output-text-file>.
      * The file to write the text to.
      */
     public function outputFile(string $outputFile): self
