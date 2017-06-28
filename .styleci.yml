@@ -6,3 +6,9 @@ enabled:
     - ordered_use
     - strict
 
+disabled:
+  - declare_equal_normalize
+
+finder:
+    exclude:
+        - "Tests"
