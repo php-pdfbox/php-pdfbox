@@ -64,10 +64,10 @@ class Pdfbox extends AbstractBinary
             $configuration->set('timeout', 60);
         }
 
-        $pdfboxJar = $configuration->get('pdfbox.jar', dirname(__DIR__).'/pdfbox-app.jar');
+        $pdfboxJar = $configuration->get('pdfbox.jar', dirname(dirname(__DIR__)).'/pdfbox-app.jar');
         if (!file_exists($pdfboxJar) || !is_readable($pdfboxJar)) {
             throw new JarNotFoundException(sprintf(
-                'pdfbox jar not found, proposed : %s', $pdfboxJar
+                'pdfbox jar not found, proposed: %s', $pdfboxJar
             ));
         }
 
