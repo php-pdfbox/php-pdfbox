@@ -1,8 +1,8 @@
 {
     "name": "php-pdfbox/php-pdfbox",
     "type": "library",
-    "description": "PHP-Pdfbox",
-    "keywords": ["pdf", "pdfbox"],
+    "description": "PHP-PDFBox",
+    "keywords": ["pdf", "PDFBox"],
     "license": "MIT",
     "authors": [
         {
@@ -13,7 +13,12 @@
     ],
     "autoload": {
         "psr-4": {
-            "Pdfbox\\": ""
+            "Pdfbox\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Poppler\\Tests\\": "tests/"
         }
     },
     "require": {

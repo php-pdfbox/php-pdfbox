@@ -11,4 +11,4 @@ disabled:
 
 finder:
     exclude:
-        - "Tests"
+        - "tests"
