@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of php-poppler.
+ * This file is part of php-pdfbox.
  *
  * (c) Stephan Wentz <stephan@wentz.it>
  *

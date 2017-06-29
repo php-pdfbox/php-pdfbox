@@ -1,9 +1,9 @@
 <?php
 
-declare (strict_types = 1);
+declare(strict_types = 1);
 
 /*
- * This file is part of php-poppler.
+ * This file is part of php-pdfbox.
  *
  * (c) Stephan Wentz <stephan@wentz.it>
  *
