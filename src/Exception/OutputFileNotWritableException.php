@@ -19,6 +19,6 @@ final class OutputFileNotWritableException extends RuntimeException
 {
     public static function create(string $outputFile): self
     {
-        return new self("Output file $outputFile not found.");
+        return new self(sprintf('Output file %s not found.', $outputFile));
     }
 }

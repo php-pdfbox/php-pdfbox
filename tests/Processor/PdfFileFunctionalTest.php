@@ -10,7 +10,7 @@
 
 declare(strict_types = 1);
 
-namespace Pdfbox\Tests\Processor;
+namespace PdfboxTests\Processor;
 
 use Pdfbox\Driver\Pdfbox;
 use Pdfbox\Processor\PdfFile;
