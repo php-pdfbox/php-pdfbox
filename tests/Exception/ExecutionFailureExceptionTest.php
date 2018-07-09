@@ -26,6 +26,6 @@ class ExecutionFailureExceptionTest extends TestCase
         $e = ExecutionFailureException::createFromCommand('test_cmd', 'test_name');
 
         $this->assertSame('test_name failed to execute command test_cmd', $e->getMessage());
-        $this->assertSame('test_cmd.', $e->getCommand());
+        $this->assertSame('test_cmd', $e->getCommand());
     }
 }
