@@ -1,39 +1,33 @@
 <?php
+/*
+ * This file is part of php-pdfbox.
+ *
+ * (c) Stephan Wentz <stephan@wentz.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
-namespace Pdfbox\Tests\Processor;
+declare(strict_types = 1);
 
-use Pdfbox\Driver\Pdfbox;
-use Pdfbox\Processor\PdfFile;
-use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
+namespace Pdfbox\Test;
 
 /**
- * PdfFile functional test.
- *
- * @covers \Pdfbox\Processor\PdfFile
+ * Pdf related functions trait.
  */
-class PdfFileFunctionalTest extends TestCase
+trait PdfFileTrait
 {
-    const TEST_FILE = __DIR__.'/../files/pdf-sample.pdf';
-
-    public function testToText()
+    public function getJarFilePath(): string
     {
-        $pdfFile = new PdfFile(
-            Pdfbox::create(
-                $this->prophesize(LoggerInterface::class)->reveal(),
-                [
-                    'java.binaries' => 'java',
-                ]
-            )
-        );
-
-        $text = $pdfFile->toText(self::TEST_FILE);
-
-        $this->assertNotEmpty($text);
-        $this->assertEquals($this->createTextContent(), $text);
+        return realpath(__DIR__.'/../pdfbox-app.jar');
     }
 
-    private function createTextContent()
+    public function getPdfFilePath(): string
+    {
+        return realpath(__DIR__.'/../../tests/files/pdf-sample.pdf');
+    }
+
+    public function getPdfFileContent(): string
     {
         $text = "Adobe Acrobat PDF Files
 Adobe® Portable Document Format (PDF) is a universal file format that preserves all

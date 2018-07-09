@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of php-pdfbox.
  *
@@ -8,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+declare(strict_types = 1);
 
 namespace Pdfbox\Tests\Driver\Command;
 
@@ -23,7 +24,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ExtractTextCommandTest extends TestCase
 {
-    public function testObjectCanBeConstructed()
+    public function testObjectCanBeConstructed(): ExtractTextCommand
     {
         $command = new ExtractTextCommand();
 
@@ -35,7 +36,7 @@ class ExtractTextCommandTest extends TestCase
     /**
      * @depends testObjectCanBeConstructed
      */
-    public function testToArrayWithoutInputFileThrowsException(ExtractTextCommand $command)
+    public function testToArrayWithoutInputFileThrowsException(ExtractTextCommand $command): void
     {
         $this->expectException(InputFileMissingException::class);
 
@@ -45,7 +46,7 @@ class ExtractTextCommandTest extends TestCase
     /**
      * @depends testObjectCanBeConstructed
      */
-    public function testToArrayWithInvalidFileThrowsException(ExtractTextCommand $command)
+    public function testToArrayWithInvalidFileThrowsException(ExtractTextCommand $command): void
     {
         $this->expectException(InputFileNotFoundException::class);
 
@@ -59,7 +60,7 @@ class ExtractTextCommandTest extends TestCase
     /**
      * @depends testObjectCanBeConstructed
      */
-    public function testToArray(ExtractTextCommand $command)
+    public function testToArray(ExtractTextCommand $command): void
     {
         $tempFile = sys_get_temp_dir().'/test.txt';
 
@@ -76,7 +77,7 @@ class ExtractTextCommandTest extends TestCase
     /**
      * @depends testObjectCanBeConstructed
      */
-    public function testToArrayWithAllOptions(ExtractTextCommand $command)
+    public function testToArrayWithAllOptions(ExtractTextCommand $command): void
     {
         $tempFile = sys_get_temp_dir().'/test.txt';
 

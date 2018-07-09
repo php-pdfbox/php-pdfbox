@@ -1,7 +1,4 @@
 <?php
-
-declare(strict_types = 1);
-
 /*
  * This file is part of php-pdfbox.
  *
@@ -11,15 +8,17 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types = 1);
+
 namespace Pdfbox\Exception;
 
 /**
- * Pdfbox input file not found exception.
+ * Pdfbox jar not found exception.
  */
-class InputFileNotFoundException extends RuntimeException
+final class JarNotFoundException extends RuntimeException implements ExceptionInterface
 {
-    public static function create(string $inputFile): self
+    public static function create(string $jar): self
     {
-        return new self("Input file $inputFile not found.");
+        return new self(sprintf('Pdfbox jar %s not found.', $jar));
     }
 }

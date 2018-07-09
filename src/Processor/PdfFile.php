@@ -1,7 +1,4 @@
 <?php
-
-declare(strict_types = 1);
-
 /*
  * This file is part of php-pdfbox.
  *
@@ -11,6 +8,8 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types = 1);
+
 namespace Pdfbox\Processor;
 
 use Pdfbox\Driver\Pdfbox;
@@ -18,8 +17,6 @@ use Pdfbox\Exception\FileNotFoundException;
 
 /**
  * PDF file.
- *
- * @author Stephan Wentz <sw@brainbits.net>
  */
 class PdfFile
 {
@@ -38,7 +35,7 @@ class PdfFile
             ->console()
             ->inputFile($inputFile);
 
-        $output = $this->pdfbox->command($command->toArray());
+        $output = $this->pdfbox->command($command);
 
         return $output;
     }
@@ -52,15 +49,15 @@ class PdfFile
             ->html()
             ->inputFile($inputFile);
 
-        $output = $this->pdfbox->command($command->toArray());
+        $output = $this->pdfbox->command($command);
 
         return $output;
     }
 
-    private function assertFileExists(string $inputFile)
+    private function assertFileExists(string $inputFile): void
     {
         if (!file_exists($inputFile)) {
-            throw new FileNotFoundException("File $inputFile not found.");
+            throw FileNotFoundException::create($inputFile);
         }
     }
 }

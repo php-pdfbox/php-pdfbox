@@ -1,7 +1,4 @@
 <?php
-
-declare(strict_types = 1);
-
 /*
  * This file is part of php-pdfbox.
  *
@@ -11,11 +8,13 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types = 1);
+
 namespace Pdfbox\Exception;
 
 /**
- * Pdfbox runtime exception.
+ * Pdfbox logic exception.
  */
-class RuntimeException extends \RuntimeException implements ExceptionInterface
+class LogicException extends \LogicException implements ExceptionInterface
 {
 }

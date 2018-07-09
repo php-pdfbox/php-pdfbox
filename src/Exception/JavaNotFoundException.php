@@ -1,7 +1,4 @@
 <?php
-
-declare(strict_types = 1);
-
 /*
  * This file is part of php-pdfbox.
  *
@@ -11,11 +8,17 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types = 1);
+
 namespace Pdfbox\Exception;
 
 /**
- * Pdfbox jar not found exception.
+ * Java not found exception.
  */
-class JarNotFoundException extends RuntimeException implements ExceptionInterface
+final class JavaNotFoundException extends RuntimeException
 {
+    public static function create(string $java): self
+    {
+        return new self(sprintf('Java binary %s not found.', $java));
+    }
 }

@@ -11,20 +11,14 @@
          verbose="false">
 
     <testsuites>
-        <testsuite name="Pdfbox Tests Suite">
-            <directory>Tests</directory>
+        <testsuite name="PHP-PDFBox Tests Suite">
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory>.</directory>
-            <exclude>
-                <file>.sami.php</file>
-                <directory>docs</directory>
-                <directory>vendor</directory>
-                <directory>Tests</directory>
-            </exclude>
+            <directory>src</directory>
         </whitelist>
     </filter>
 
