@@ -27,7 +27,9 @@ use Throwable;
 final class Pdfbox
 {
     private $java;
+
     private $pdfboxJar;
+    
     private $logger;
 
     public function __construct(string $java, string $pdfboxJar, LoggerInterface $logger)
