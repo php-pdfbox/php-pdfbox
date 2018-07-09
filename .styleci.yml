@@ -6,6 +6,7 @@ enabled:
 
 disabled:
   - declare_equal_normalize
+  - yoda_style
 
 finder:
     exclude:

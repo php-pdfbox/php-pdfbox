@@ -14,9 +14,9 @@ namespace Pdfbox\Driver;
 
 use Pdfbox\Driver\Command\CommandInterface;
 use Pdfbox\Driver\Command\ExtractTextCommand;
-use Pdfbox\Exception\JavaNotFoundException;
 use Pdfbox\Exception\ExecutionFailureException;
 use Pdfbox\Exception\JarNotFoundException;
+use Pdfbox\Exception\JavaNotFoundException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\Process;
 use Throwable;
@@ -24,7 +24,7 @@ use Throwable;
 /**
  * pdfbox driver.
  */
-class Pdfbox
+final class Pdfbox
 {
     private $java;
     private $pdfboxJar;
@@ -51,7 +51,7 @@ class Pdfbox
     /**
      * Creates an Pdftotext driver.
      */
-    public static function create(LoggerInterface $logger, string $java, string $pdfboxJar): Pdfbox
+    public static function create(LoggerInterface $logger, string $java, string $pdfboxJar): self
     {
         return new self($java, $pdfboxJar, $logger);
     }
@@ -105,6 +105,6 @@ class Pdfbox
     {
         $this->logger->error(sprintf('%s failed to execute command %s', 'pdfbox', $command));
 
-        throw ExecutionFailureException::createFromCommand($command,'pdfbox', $e ?: null);
+        throw ExecutionFailureException::createFromCommand($command, 'pdfbox', $e ?: null);
     }
 }

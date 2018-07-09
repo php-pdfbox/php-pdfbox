@@ -22,7 +22,9 @@ use Pdfbox\Exception\OutputFileNotWritableException;
 class ExtractTextCommand implements CommandInterface
 {
     private $options;
+
     private $inputFile;
+
     private $outputFile;
 
     public function __construct()
