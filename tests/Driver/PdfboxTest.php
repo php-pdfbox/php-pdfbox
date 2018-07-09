@@ -1,19 +1,27 @@
 <?php
+/*
+ * This file is part of php-pdfbox.
+ *
+ * (c) Stephan Wentz <stephan@wentz.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types = 1);
 
 namespace Pdfbox\Tests\Driver;
 
-use Alchemy\BinaryDriver\Configuration;
-use Alchemy\BinaryDriver\ProcessBuilderFactory;
-use Alchemy\BinaryDriver\ProcessRunner;
+use Pdfbox\Driver\Command\CommandInterface;
 use Pdfbox\Driver\Command\ExtractTextCommand;
 use Pdfbox\Driver\Pdfbox;
-use Pdfbox\Exception\ExecutableNotFoundException;
+use Pdfbox\Exception\JavaNotFoundException;
 use Pdfbox\Exception\JarNotFoundException;
+use Pdfbox\Test\PdfFileTrait;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Process\ExecutableFinder;
-use Symfony\Component\Process\Process;
 
 /**
  * Pdfbox test.
@@ -22,102 +30,84 @@ use Symfony\Component\Process\Process;
  */
 class PdfboxTest extends TestCase
 {
-    public function setUp()
+    use PdfFileTrait;
+
+    private $java;
+    private $jar;
+
+    protected function setUp(): void
     {
+        $this->jar = $this->getJarFilePath();
+
         $executableFinder = new ExecutableFinder();
-        $found = false;
-        foreach (array('java') as $name) {
-            if (null !== $executableFinder->find($name)) {
-                $found = true;
-                break;
-            }
+        $java = $executableFinder->find('java');
+        if (!$java) {
+            $this->markTestSkipped('java binary not found');
         }
-        if (!$found) {
-            $this->markTestSkipped('java not found');
-        }
+
+        $this->java = $java;
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $logger = $this->createLogger();
-        $pdfbox = Pdfbox::create($logger->reveal(), array());
+
+        $pdfbox = Pdfbox::create($logger->reveal(), $this->java, $this->jar);
+
         $this->assertInstanceOf(Pdfbox::class, $pdfbox);
-        $this->assertEquals($logger->reveal(), $pdfbox->getProcessRunner()->getLogger());
     }
 
-    public function testCreateWithConfig()
+    public function testCreateFailureThrowsAnExecutableException(): void
     {
-        $conf = new Configuration();
-        $pdfbox = Pdfbox::create($this->createLogger()->reveal(), $conf);
-        $this->assertEquals($conf, $pdfbox->getConfiguration());
+        $this->expectException(JavaNotFoundException::class);
+
+        Pdfbox::create($this->createLogger()->reveal(), '/path/to/nowhere', $this->jar);
     }
 
-    public function testCreateFailureThrowsAnExecutableException()
-    {
-        $this->expectException(ExecutableNotFoundException::class);
-
-        Pdfbox::create($this->createLogger()->reveal(), ['java.binaries' => '/path/to/nowhere']);
-    }
-
-    public function testCreateFailureThrowsAJarException()
+    public function testCreateFailureThrowsAJarException(): void
     {
         $this->expectException(JarNotFoundException::class);
 
-        Pdfbox::create($this->createLogger()->reveal(), ['pdfbox.jar' => '/path/to/nowhere']);
+        Pdfbox::create($this->createLogger()->reveal(), $this->java, '/path/to/nowhere');
     }
 
-    public function testGetName()
+    public function testExtractText(): void
     {
         $logger = $this->createLogger();
 
-        $pdfbox = Pdfbox::create($logger->reveal());
-
-        $result = $pdfbox->getName();
-
-        $this->assertSame('pdfbox', $result);
-    }
-
-    public function testExtractText()
-    {
-        $logger = $this->createLogger();
-
-        $pdfbox = Pdfbox::create($logger->reveal());
+        $pdfbox = Pdfbox::create($logger->reveal(), $this->java, $this->jar);
 
         $result = $pdfbox->extractText();
 
         $this->assertInstanceOf(ExtractTextCommand::class, $result);
     }
 
-    public function testCommand()
+    public function testCommand(): void
     {
-        $factory = $this->prophesize(ProcessBuilderFactory::class);
-        $factory->create(['-jar', null, 'test'])
-            ->shouldBeCalled()
-            ->willReturn(new Process(''));
-        $runner = $this->prophesize(ProcessRunner::class);
         $logger = $this->createLogger();
 
-        $pdfbox = new Pdfbox($factory->reveal(), $logger->reveal(), new Configuration());
-        $pdfbox->setProcessRunner($runner->reveal());
+        $pdfbox = new Pdfbox($this->java, $this->jar, $logger->reveal());
 
-        $result = $pdfbox->command('test');
+        $cmd = $this->prophesize(CommandInterface::class);
+        $cmd->toArray()
+            ->willReturn(['ExtractText', $this->getPdfFilePath(), '-console'])
+            ->shouldBeCalled();
+
+        $pdfbox->command($cmd->reveal());
     }
 
-    public function testIsAvailable()
+    public function testIsAvailable(): void
     {
         $logger = $this->createLogger();
-        $logger->error(Argument::cetera())->shouldBeCalled();
-        $logger->info(Argument::containingString('pdfbox is available'))->shouldBeCalled();
-        $logger->info(Argument::cetera())->shouldBeCalled();
 
-        $pdfbox = Pdfbox::create($logger->reveal());
+        $pdfbox = Pdfbox::create($logger->reveal(), $this->java, $this->jar);
 
         $result = $pdfbox->isAvailable();
 
         $this->assertTrue($result);
     }
 
-    private function createLogger()
+    private function createLogger(): ObjectProphecy
     {
         return $this->prophesize(LoggerInterface::class);
     }

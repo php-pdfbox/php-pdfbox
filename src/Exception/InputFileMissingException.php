@@ -1,7 +1,4 @@
 <?php
-
-declare(strict_types = 1);
-
 /*
  * This file is part of php-pdfbox.
  *
@@ -11,11 +8,17 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types = 1);
+
 namespace Pdfbox\Exception;
 
 /**
  * Pdfbox input file missing exception.
  */
-class InputFileMissingException extends LogicException
+final class InputFileMissingException extends LogicException
 {
+    public static function create(): self
+    {
+        return new self('Input file missing.');
+    }
 }

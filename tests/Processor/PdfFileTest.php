@@ -1,4 +1,14 @@
 <?php
+/*
+ * This file is part of php-pdfbox.
+ *
+ * (c) Stephan Wentz <stephan@wentz.it>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types = 1);
 
 namespace Pdfbox\Tests\Processor;
 
@@ -6,6 +16,7 @@ use Pdfbox\Driver\Command\ExtractTextCommand;
 use Pdfbox\Driver\Pdfbox;
 use Pdfbox\Exception\FileNotFoundException;
 use Pdfbox\Processor\PdfFile;
+use Pdfbox\Test\PdfFileTrait;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -16,56 +27,65 @@ use Prophecy\Prophecy\ObjectProphecy;
  */
 class PdfFileTest extends TestCase
 {
-    const TEST_FILE = __DIR__.'/../files/pdf-sample.pdf';
+    use PdfFileTrait;
 
-    public function testToTextFromInvalid()
+    public function testToTextFromInvalid(): void
     {
         $this->expectException(FileNotFoundException::class);
 
+        $cmd = new ExtractTextCommand();
+
         $pdfbox = $this->createPdfbox();
-        $pdfbox->extractText()->willReturn(new ExtractTextCommand());
+        $pdfbox->extractText()
+            ->willReturn($cmd);
 
         $pdfFile = new PdfFile($pdfbox->reveal());
         $pdfFile->toText('/path/to/nowhere');
     }
 
-    public function testToText()
+    public function testToText(): void
     {
+        $cmd = new ExtractTextCommand();
+
         $pdfbox = $this->createPdfbox();
         $pdfbox->extractText()
-            ->willReturn(new ExtractTextCommand());
-        $pdfbox->command(['ExtractText', '-console', self::TEST_FILE])
+            ->willReturn($cmd);
+        $pdfbox->command($cmd)
             ->shouldBeCalled()
             ->willReturn('testContent');
 
         $pdfFile = new PdfFile($pdfbox->reveal());
-        $text = $pdfFile->toText(self::TEST_FILE);
+        $text = $pdfFile->toText($this->getPdfFilePath());
 
         $this->assertNotEmpty($text);
     }
 
-    public function testToHtmlFromInvalid()
+    public function testToHtmlFromInvalid(): void
     {
         $this->expectException(FileNotFoundException::class);
 
+        $cmd = new ExtractTextCommand();
+
         $pdfbox = $this->createPdfbox();
-        $pdfbox->extractText()->willReturn(new ExtractTextCommand());
+        $pdfbox->extractText()->willReturn($cmd);
 
         $pdfFile = new PdfFile($pdfbox->reveal());
         $pdfFile->toHtml('/path/to/nowhere', sys_get_temp_dir());
     }
 
-    public function testToHtml()
+    public function testToHtml(): void
     {
+        $cmd = new ExtractTextCommand();
+
         $pdfbox = $this->createPdfbox();
         $pdfbox->extractText()
-            ->willReturn(new ExtractTextCommand());
-        $pdfbox->command(['ExtractText', '-console', '-html', self::TEST_FILE])
+            ->willReturn($cmd);
+        $pdfbox->command($cmd)
             ->shouldBeCalled()
             ->willReturn('testContent');
 
         $pdfFile = new PdfFile($pdfbox->reveal());
-        $html = $pdfFile->toHtml(self::TEST_FILE, sys_get_temp_dir());
+        $html = $pdfFile->toHtml($this->getPdfFilePath(), sys_get_temp_dir());
 
         $this->assertNotEmpty($html);
     }
@@ -73,7 +93,7 @@ class PdfFileTest extends TestCase
     /**
      * @return Pdfbox|ObjectProphecy
      */
-    private function createPdfbox()
+    private function createPdfbox(): ObjectProphecy
     {
         return $this->prophesize(Pdfbox::class);
     }

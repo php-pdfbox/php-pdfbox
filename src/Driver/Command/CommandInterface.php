@@ -1,7 +1,4 @@
 <?php
-
-declare(strict_types = 1);
-
 /*
  * This file is part of php-pdfbox.
  *
@@ -11,11 +8,17 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
-namespace Pdfbox\Exception;
+declare(strict_types = 1);
+
+namespace Pdfbox\Driver\Command;
 
 /**
- * Pdfbox executable not found exception.
+ * pdfbox command.
  */
-class ExecutableNotFoundException extends RuntimeException implements ExceptionInterface
+interface CommandInterface
 {
+    /**
+     * @return mixed[]
+     */
+    public function toArray(): array;
 }

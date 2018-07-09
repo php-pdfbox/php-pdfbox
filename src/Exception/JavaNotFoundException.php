@@ -13,12 +13,12 @@ declare(strict_types = 1);
 namespace Pdfbox\Exception;
 
 /**
- * Pdfbox file not found exception.
+ * Java not found exception.
  */
-final class FileNotFoundException extends InvalidArgumentException
+final class JavaNotFoundException extends RuntimeException
 {
-    public static function create(string $file): self
+    public static function create(string $java): self
     {
-        return new self(sprintf('File %s not found.', $file));
+        return new self(sprintf('Java binary %s not found.', $java));
     }
 }

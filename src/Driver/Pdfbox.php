@@ -1,7 +1,4 @@
 <?php
-
-declare(strict_types = 1);
-
 /*
  * This file is part of php-pdfbox.
  *
@@ -11,32 +8,39 @@ declare(strict_types = 1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types = 1);
+
 namespace Pdfbox\Driver;
 
-use Alchemy\BinaryDriver\AbstractBinary;
-use Alchemy\BinaryDriver\Configuration;
-use Alchemy\BinaryDriver\ConfigurationInterface;
-use Alchemy\BinaryDriver\Exception\ExecutableNotFoundException as BinaryDriverExecutableNotFound;
-use Alchemy\BinaryDriver\Listeners\ListenerInterface;
-use Evenement\EventEmitter;
+use Pdfbox\Driver\Command\CommandInterface;
 use Pdfbox\Driver\Command\ExtractTextCommand;
-use Pdfbox\Exception\ExecutableNotFoundException;
+use Pdfbox\Exception\JavaNotFoundException;
+use Pdfbox\Exception\ExecutionFailureException;
 use Pdfbox\Exception\JarNotFoundException;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Process\Process;
+use Throwable;
 
 /**
- * pdfbox binary driver.
+ * pdfbox driver.
  */
-class Pdfbox extends AbstractBinary
+class Pdfbox
 {
-    /**
-     * @var bool
-     */
-    private $isAvailable;
+    private $java;
+    private $pdfboxJar;
+    private $logger;
 
-    public function getName(): string
+    public function __construct(string $java, string $pdfboxJar, LoggerInterface $logger)
     {
-        return 'pdfbox';
+        if (!file_exists($java)) {
+            throw JavaNotFoundException::create($java);
+        }
+        if (!file_exists($pdfboxJar)) {
+            throw JarNotFoundException::create($pdfboxJar);
+        }
+        $this->java = $java;
+        $this->pdfboxJar = $pdfboxJar;
+        $this->logger = $logger;
     }
 
     public function extractText(): ExtractTextCommand
@@ -46,52 +50,15 @@ class Pdfbox extends AbstractBinary
 
     /**
      * Creates an Pdftotext driver.
-     *
-     * @param LoggerInterface     $logger
-     * @param array|Configuration $configuration
-     *
-     * @return Pdfbox
      */
-    public static function create(LoggerInterface $logger = null, $configuration = array()): Pdfbox
+    public static function create(LoggerInterface $logger, string $java, string $pdfboxJar): Pdfbox
     {
-        if (!$configuration instanceof ConfigurationInterface) {
-            $configuration = new Configuration($configuration);
-        }
-
-        $javaBinaries = $configuration->get('java.binaries', 'java');
-
-        if (!$configuration->has('timeout')) {
-            $configuration->set('timeout', 60);
-        }
-
-        $pdfboxJar = $configuration->get('pdfbox.jar', dirname(dirname(__DIR__)).'/pdfbox-app.jar');
-        if (!file_exists($pdfboxJar) || !is_readable($pdfboxJar)) {
-            throw new JarNotFoundException(sprintf(
-                'pdfbox jar not found, proposed: %s', $pdfboxJar
-            ));
-        }
-
-        $configuration->set('pdfbox.jar', $pdfboxJar);
-
-        try {
-            return static::load($javaBinaries, $logger, $configuration);
-        } catch (BinaryDriverExecutableNotFound $e) {
-            throw new ExecutableNotFoundException('Unable to load pdfbox', $e->getCode(), $e);
-        }
+        return new self($java, $pdfboxJar, $logger);
     }
 
-    public function command($command, $bypassErrors = false, $listeners = null)
+    public function command(CommandInterface $command): string
     {
-        if (!is_array($command)) {
-            $command = array($command);
-        }
-
-        $pdfboxJar = $this->configuration->get('pdfbox.jar');
-
-        array_unshift($command, $pdfboxJar);
-        array_unshift($command, '-jar');
-
-        return $this->run($this->factory->create($command), $bypassErrors, $listeners);
+        return $this->run($command->toArray());
     }
 
     /**
@@ -99,41 +66,45 @@ class Pdfbox extends AbstractBinary
      */
     public function isAvailable(): bool
     {
-        if (null === $this->isAvailable) {
-            $listener = new class() extends EventEmitter implements ListenerInterface {
-                public $output = '';
+        return true;
+    }
 
-                public function handle($type, $data)
-                {
-                    if ($type === 'err') {
-                        $this->output = $data;
-                    }
-                }
+    /**
+     * @param mixed[] $commands
+     */
+    private function run(array $commands): string
+    {
+        array_unshift($commands, $this->pdfboxJar);
+        array_unshift($commands, '-jar');
+        array_unshift($commands, $this->java);
 
-                public function forwardedEvents()
-                {
-                    return [];
-                }
-            };
+        $process = new Process($commands);
 
-            $this->command([], true, $listener);
+        $this->logger->info(sprintf(
+            '%s running command %s',
+            'pdfbox',
+            $process->getCommandLine()
+        ));
 
-            if ($listener->output) {
-                $version = 'unknown';
-                if (preg_match('/^PDFBox version: "(.+)"/', $listener->output, $match)) {
-                    $version = $match[1];
-                }
-
-                $this->isAvailable = true;
-
-                $this->getProcessRunner()->getLogger()->info("pdfbox is available, version $version");
-            } else {
-                $this->isAvailable = false;
-
-                $this->getProcessRunner()->getLogger()->warning('pdfbox is not available');
-            }
+        try {
+            $process->run();
+        } catch (Throwable $e) {
+            $this->doExecutionFailure($process->getCommandLine(), $e);
         }
 
-        return $this->isAvailable;
+        if (!$process->isSuccessful()) {
+            $this->doExecutionFailure($process->getCommandLine());
+        }
+
+        $this->logger->info(sprintf('%s executed command successfully', 'pdfbox'));
+
+        return $process->getOutput();
+    }
+
+    private function doExecutionFailure(string $command, ?Throwable $e = null): void
+    {
+        $this->logger->error(sprintf('%s failed to execute command %s', 'pdfbox', $command));
+
+        throw ExecutionFailureException::createFromCommand($command,'pdfbox', $e ?: null);
     }
 }
