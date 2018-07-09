@@ -10,7 +10,7 @@
 
 declare(strict_types = 1);
 
-namespace Pdfbox\Tests\Processor;
+namespace PdfboxTests\Processor;
 
 use Pdfbox\Driver\Command\ExtractTextCommand;
 use Pdfbox\Driver\Pdfbox;
@@ -57,7 +57,27 @@ class PdfFileTest extends TestCase
         $pdfFile = new PdfFile($pdfbox->reveal());
         $text = $pdfFile->toText($this->getPdfFilePath());
 
-        $this->assertNotEmpty($text);
+        $this->assertSame('testContent', $text);
+        $this->assertContains('-console', $cmd->toArray());
+    }
+
+    public function testToTextWithOutfile(): void
+    {
+        $cmd = new ExtractTextCommand();
+
+        $pdfbox = $this->createPdfbox();
+        $pdfbox->extractText()
+            ->willReturn($cmd);
+        $pdfbox->command($cmd)
+            ->shouldBeCalled()
+            ->willReturn('testContent');
+
+        $outFile = 'out.text';
+
+        $pdfFile = new PdfFile($pdfbox->reveal());
+        $pdfFile->toText($this->getPdfFilePath(), $outFile);
+
+        $this->assertContains($outFile, $cmd->toArray());
     }
 
     public function testToHtmlFromInvalid(): void
@@ -70,7 +90,7 @@ class PdfFileTest extends TestCase
         $pdfbox->extractText()->willReturn($cmd);
 
         $pdfFile = new PdfFile($pdfbox->reveal());
-        $pdfFile->toHtml('/path/to/nowhere', sys_get_temp_dir());
+        $pdfFile->toHtml('/path/to/nowhere');
     }
 
     public function testToHtml(): void
@@ -85,9 +105,28 @@ class PdfFileTest extends TestCase
             ->willReturn('testContent');
 
         $pdfFile = new PdfFile($pdfbox->reveal());
-        $html = $pdfFile->toHtml($this->getPdfFilePath(), sys_get_temp_dir());
+        $pdfFile->toHtml($this->getPdfFilePath());
 
-        $this->assertNotEmpty($html);
+        $this->assertContains('-console', $cmd->toArray());
+    }
+
+    public function testToHtmlWithOutfile(): void
+    {
+        $cmd = new ExtractTextCommand();
+
+        $pdfbox = $this->createPdfbox();
+        $pdfbox->extractText()
+            ->willReturn($cmd);
+        $pdfbox->command($cmd)
+            ->shouldBeCalled()
+            ->willReturn('testContent');
+
+        $outFile = 'out.html';
+
+        $pdfFile = new PdfFile($pdfbox->reveal());
+        $pdfFile->toHtml($this->getPdfFilePath(), $outFile);
+
+        $this->assertContains($outFile, $cmd->toArray());
     }
 
     /**

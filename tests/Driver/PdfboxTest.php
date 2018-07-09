@@ -10,7 +10,7 @@
 
 declare(strict_types = 1);
 
-namespace Pdfbox\Tests\Driver;
+namespace PdfboxTests\Driver;
 
 use Pdfbox\Driver\Command\CommandInterface;
 use Pdfbox\Driver\Command\ExtractTextCommand;

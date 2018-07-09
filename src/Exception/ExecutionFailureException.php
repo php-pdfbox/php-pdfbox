@@ -28,7 +28,7 @@ final class ExecutionFailureException extends RuntimeException
         $this->command = $command;
     }
 
-    public static function createFromCommand(string $command, string $name, ?Throwable $e): self
+    public static function createFromCommand(string $command, string $name, ?Throwable $e = null): self
     {
         return new self(
             $command,

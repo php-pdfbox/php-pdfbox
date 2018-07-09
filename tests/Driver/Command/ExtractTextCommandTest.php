@@ -10,7 +10,7 @@
 
 declare(strict_types = 1);
 
-namespace Pdfbox\Tests\Driver\Command;
+namespace PdfboxTests\Driver\Command;
 
 use Pdfbox\Driver\Command\ExtractTextCommand;
 use Pdfbox\Exception\InputFileMissingException;

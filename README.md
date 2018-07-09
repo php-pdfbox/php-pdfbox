@@ -22,11 +22,19 @@ It is recommended to install PHP-PDFBox through
 ## Main API usage:
 
 ```php
-$file = new Pdfbox\Processor\PdfFile(...);
+$file = new \Pdfbox\Processor\PdfFile(
+    new Pdfbox(
+        '/path/to/java',
+        '/path/to/pdfbox-app.jar',
+        new \Psr\Log\NullLogger()
+    );
+);
 
-// Get pdf info
+// Convert pdf to text
 echo $file->toText('test.pdf');
 ```
+
+See `examples/*.php` for more examples.
 
 ## License
 

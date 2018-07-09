@@ -27,31 +27,37 @@ class PdfFile
         $this->pdfbox = $pdfbox;
     }
 
-    public function toText(string $inputFile): string
+    public function toText(string $inputFile, ?string $outputFile = null): string
     {
         $this->assertFileExists($inputFile);
 
         $command = $this->pdfbox->extractText()
-            ->console()
             ->inputFile($inputFile);
 
-        $output = $this->pdfbox->command($command);
+        if ($outputFile) {
+            $command->outputFile($outputFile);
+        } else {
+            $command->console();
+        }
 
-        return $output;
+        return $this->pdfbox->command($command);
     }
 
-    public function toHtml(string $inputFile): string
+    public function toHtml(string $inputFile, ?string $outputFile = null): string
     {
         $this->assertFileExists($inputFile);
 
         $command = $this->pdfbox->extractText()
-            ->console()
             ->html()
             ->inputFile($inputFile);
 
-        $output = $this->pdfbox->command($command);
+        if ($outputFile) {
+            $command->outputFile($outputFile);
+        } else {
+            $command->console();
+        }
 
-        return $output;
+        return $this->pdfbox->command($command);
     }
 
     private function assertFileExists(string $inputFile): void

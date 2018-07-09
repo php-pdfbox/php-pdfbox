@@ -15,7 +15,7 @@ namespace Pdfbox\Exception;
 /**
  * Pdfbox jar not found exception.
  */
-final class JarNotFoundException extends RuntimeException implements ExceptionInterface
+final class JarNotFoundException extends RuntimeException
 {
     public static function create(string $jar): self
     {
