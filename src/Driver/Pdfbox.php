@@ -24,7 +24,7 @@ use Throwable;
 /**
  * pdfbox driver.
  */
-final class Pdfbox
+class Pdfbox
 {
     private $java;
 
