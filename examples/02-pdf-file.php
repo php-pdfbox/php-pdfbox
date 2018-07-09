@@ -23,10 +23,25 @@ $pdfbox = new Pdfbox(
     new Logger()
 );
 
-$command = $pdfbox->extractText()
-    ->inputFile(__DIR__.'/pdf-sample.pdf')
-    ->console();
+$pdfFile = new \Pdfbox\Processor\PdfFile($pdfbox);
 
-$output = $pdfbox->command($command);
+$output = $pdfFile->toText(__DIR__.'/pdf-sample.pdf');
+echo '-> text stored in $output'.PHP_EOL;
 
-echo 'Output:'.PHP_EOL.$output;
+$pdfFile->toText(__DIR__.'/pdf-sample.pdf', __DIR__.'/out.text');
+echo '-> text stored in file out.text'.PHP_EOL;
+
+$output = $pdfFile->toHtml(__DIR__.'/pdf-sample.pdf');
+echo '-> html stored in $output'.PHP_EOL;
+
+$pdfFile->toHtml(__DIR__.'/pdf-sample.pdf', __DIR__.'/out.html');
+echo '-> html stored in file out.html'.PHP_EOL;
+
+// Cleanup
+if (file_exists(__DIR__.'/out.text')) {
+    unlink(__DIR__.'/out.text');
+}
+
+if (file_exists(__DIR__.'/out.html')) {
+    unlink(__DIR__.'/out.html');
+}

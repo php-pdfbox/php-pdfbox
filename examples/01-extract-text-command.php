@@ -23,13 +23,36 @@ $pdfbox = new Pdfbox(
     new Logger()
 );
 
-$pdfFile = new \Pdfbox\Processor\PdfFile($pdfbox);
+$command = $pdfbox->extractText()
+    ->inputFile(__DIR__.'/pdf-sample.pdf')
+    ->console();
+$output = $pdfbox->command($command);
+echo '-> text stored in $output'.PHP_EOL;
 
-$pdfFile->toText(__DIR__.'/pdf-sample.pdf', __DIR__.'/out.text');
+$command = $pdfbox->extractText()
+    ->inputFile(__DIR__.'/pdf-sample.pdf')
+    ->outputFile(__DIR__.'/out.text');
+$pdfbox->command($command);
+echo '-> text stored in file out.text'.PHP_EOL;
 
+$command = $pdfbox->extractText()
+    ->inputFile(__DIR__.'/pdf-sample.pdf')
+    ->html()
+    ->console();
+$output = $pdfbox->command($command);
+echo '-> html stored in $output'.PHP_EOL;
 
-echo 'out.text:'.PHP_EOL.file_get_contents(__DIR__.'/out.text');
+$command = $pdfbox->extractText()
+    ->inputFile(__DIR__.'/pdf-sample.pdf')
+    ->outputFile(__DIR__.'/out.html')
+    ->html();
+$pdfbox->command($command);
+echo '-> html stored in file out.html'.PHP_EOL;
 
+// Cleanup
 if (file_exists(__DIR__.'/out.text')) {
     unlink(__DIR__.'/out.text');
+}
+if (file_exists(__DIR__.'/out.html')) {
+    unlink(__DIR__.'/out.html');
 }
