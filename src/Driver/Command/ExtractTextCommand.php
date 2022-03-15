@@ -162,13 +162,23 @@ class ExtractTextCommand implements CommandInterface
         return $this->setOption('-endPage', (string) $endPage);
     }
 
+    /**
+     * Set options (eg -password MyPasswd)
+     * @param string $key Name of the option
+     * @param string $value Value to be passed with the option
+     */
     private function setOption(string $key, string $value): self
-    {
-        $this->options[$key] = $value;
+        {
+            $this->setFlag($key);
+            $this->options[$key] = $value;
 
-        return $this;
-    }
+            return $this;
+        }
 
+    /**
+     * Set flags (eg -password)
+     * @param string $key Name of the flag including leading hyphen
+     */
     private function setFlag(string $key): self
     {
         if (array_search($key, $this->options) === false) {

@@ -1,6 +1,6 @@
 # PHP pdfbox
 
-Forked an updated version of php-pdfbox. Can be installed via composer by adding the following lines to the 'require' section of composer.json rather than the regular php-pdfbox require mentioned under Intsallation:
+Forked and updated version of php-pdfbox. Can be installed via composer by adding the following lines to the 'require' section of composer.json rather than the regular php-pdfbox require mentioned under Intsallation:
 
 ```json
 {
