@@ -1,5 +1,16 @@
 # PHP pdfbox
 
+Forked an updated version of php-pdfbox. Can be installed via composer by adding the following lines to the 'require' section of composer.json rather than the regular php-pdfbox require mentioned under Intsallation:
+
+```json
+{
+    "require": {
+        "aws/aws-sdk-php": "^3.0.0",
+        "php-pdfbox/php-pdfbox": "dev-pdfbox-updated"
+    },
+}
+```
+
 [![Build Status](https://secure.travis-ci.org/php-pdfbox/php-pdfbox.png?branch=master)](http://travis-ci.org/php-pdfbox/php-pdfbox)
 
 PHP-PDFBox is a tiny lib which helps you to use PDFBox https://pdfbox.apache.org/
