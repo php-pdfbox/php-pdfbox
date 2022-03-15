@@ -168,12 +168,12 @@ class ExtractTextCommand implements CommandInterface
      * @param string $value Value to be passed with the option
      */
     private function setOption(string $key, string $value): self
-        {
-            $this->setFlag($key);
-            $this->options[$key] = $value;
+    {
+        $this->setFlag($key);
+        $this->options[$key] = $value;
 
-            return $this;
-        }
+        return $this;
+    }
 
     /**
      * Set flags (eg -password)
