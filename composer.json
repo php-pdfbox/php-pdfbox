@@ -3,12 +3,18 @@
     "type": "library",
     "description": "PHP-PDFBox",
     "keywords": ["pdf", "PDFBox"],
+    "homepage": "https://github.com/php-pdfbox/php-pdfbox",
     "license": "MIT",
     "authors": [
         {
             "name": "Stephan Wentz",
             "email": "stephan@wentz.it",
             "homepage": "http://www.wentz.it/"
+        },
+        {
+            "name": "Roland Tanner",
+            "email": "roland@tannerritchie.com",
+            "homepage": "http://www.tannerritchie.com/"
         }
     ],
     "autoload": {
