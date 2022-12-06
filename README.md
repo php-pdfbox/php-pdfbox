@@ -2,7 +2,7 @@
 
 [![Build Status](https://secure.travis-ci.org/php-pdfbox/php-pdfbox.png?branch=master)](http://travis-ci.org/php-pdfbox/php-pdfbox)
 
-PHP-PDFBox is a tiny lib which helps you to use PDFBox https://pdfbox.apache.org/
+PHP-PDFBox is a tiny library which acts as a wrapper facilitating the use of PDFBox (https://pdfbox.apache.org/) in PHP.
 
 PDFBox is published under the Apache License v2.0 and is described as "The Apache PDFBox® library is an open source Java tool for working with PDF documents."
 

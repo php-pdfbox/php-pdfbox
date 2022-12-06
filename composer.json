@@ -2,13 +2,22 @@
     "name": "php-pdfbox/php-pdfbox",
     "type": "library",
     "description": "PHP-PDFBox",
-    "keywords": ["pdf", "PDFBox"],
+    "keywords": [
+        "pdf",
+        "PDFBox"
+    ],
+    "homepage": "https://github.com/php-pdfbox/php-pdfbox",
     "license": "MIT",
     "authors": [
         {
             "name": "Stephan Wentz",
             "email": "stephan@wentz.it",
             "homepage": "http://www.wentz.it/"
+        },
+        {
+            "name": "Roland Tanner",
+            "email": "roland@tannerritchie.com",
+            "homepage": "http://www.tannerritchie.com/"
         }
     ],
     "autoload": {
@@ -22,12 +31,12 @@
         }
     },
     "require": {
-        "php": "^7.1",
+        "php": "^7.1^7.1 || ^8",
         "psr/log": "^1.0",
         "symfony/process": "^5.0"
     },
     "require-dev": {
-        "phpunit/phpunit" : "^6.2"
+        "phpunit/phpunit": "^6.2"
     },
     "extra": {
         "branch-alias": {
@@ -35,6 +44,8 @@
         }
     },
     "archive": {
-        "exclude": ["/examples"]
+        "exclude": [
+            "/examples"
+        ]
     }
 }
