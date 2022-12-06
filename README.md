@@ -18,6 +18,7 @@ It is recommended to install PHP-PDFBox through
     }
 }
 ```
+pdfbox-app.jar is included in the installation. You can/should verify the integrity of pdfbox-app.jar with the PGP signatures available at https://pdfbox.apache.org/download.html.
 
 ## Main API usage:
 

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Pdfbox\Test;
 
@@ -19,12 +19,12 @@ trait PdfFileTrait
 {
     public function getJarFilePath(): string
     {
-        return realpath(__DIR__.'/../pdfbox-app.jar');
+        return realpath(__DIR__ . '/../pdfbox-app.jar');
     }
 
     public function getPdfFilePath(): string
     {
-        return realpath(__DIR__.'/../../tests/files/pdf-sample.pdf');
+        return realpath(__DIR__ . '/../../tests/files/pdf-sample.pdf');
     }
 
     public function getPdfFileContent(): string
