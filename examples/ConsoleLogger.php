@@ -49,6 +49,6 @@ class ConsoleLogger implements LoggerInterface
 
     public function log($level, $message, array $context = [])
     {
-        echo sprintf('%s: %s', $level, $message).PHP_EOL;
+        echo sprintf('%s: %s', $level, $message) . PHP_EOL;
     }
 }
