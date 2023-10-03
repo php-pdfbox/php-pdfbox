@@ -18,6 +18,7 @@ use Pdfbox\Exception\ExecutionFailureException;
 use Pdfbox\Exception\JarNotFoundException;
 use Pdfbox\Exception\JavaNotFoundException;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Process\Process;
 use Throwable;
 
@@ -42,6 +43,10 @@ class Pdfbox
         }
         $this->java = $java;
         $this->pdfboxJar = $pdfboxJar;
+
+        if (!$logger) {
+            $logger = new NullLogger;
+        }
         $this->logger = $logger;
     }
 
@@ -82,11 +87,13 @@ class Pdfbox
 
         $process = new Process($commands);
 
-        $this->logger->info(sprintf(
-            '%s running command %s',
-            'pdfbox',
-            $process->getCommandLine()
-        ));
+        if ($this->logger) {
+            $this->logger->info(sprintf(
+                '%s running command %s',
+                'pdfbox',
+                $process->getCommandLine()
+            ));
+        }
 
         try {
             $process->run();
