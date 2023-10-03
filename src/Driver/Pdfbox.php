@@ -32,7 +32,7 @@ class Pdfbox
 
     private $logger;
 
-    public function __construct(string $java, string $pdfboxJar, LoggerInterface $logger)
+    public function __construct(string $java, string $pdfboxJar, LoggerInterface $logger = null)
     {
         if (!file_exists($java)) {
             throw JavaNotFoundException::create($java);
@@ -98,14 +98,18 @@ class Pdfbox
             $this->doExecutionFailure($process->getCommandLine());
         }
 
-        $this->logger->info(sprintf('%s executed command successfully', 'pdfbox'));
+        if ($this->logger) {
+            $this->logger->info(sprintf('%s executed command successfully', 'pdfbox'));
+        }
 
         return $process->getOutput();
     }
 
     private function doExecutionFailure(string $command, ?Throwable $e = null): void
     {
-        $this->logger->error(sprintf('%s failed to execute command %s', 'pdfbox', $command));
+        if ($this->logger) {
+            $this->logger->error(sprintf('%s failed to execute command %s', 'pdfbox', $command));
+        }
 
         throw ExecutionFailureException::createFromCommand($command, 'pdfbox', $e ?: null);
     }
