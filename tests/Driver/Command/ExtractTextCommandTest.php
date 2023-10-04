@@ -2,13 +2,14 @@
 /*
  * This file is part of php-pdfbox.
  *
- * (c) Stephan Wentz <stephan@wentz.it>
+ * Copyright (c) 2017-2022 Stephan Wentz
+ * Copyright (c) 2022-2023 Roland Tanner
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace PdfboxTests\Driver\Command;
 
@@ -62,7 +63,7 @@ class ExtractTextCommandTest extends TestCase
      */
     public function testToArray(ExtractTextCommand $command): void
     {
-        $tempFile = sys_get_temp_dir().'/test.txt';
+        $tempFile = sys_get_temp_dir() . '/test.txt';
 
         $command
             ->inputFile(__FILE__)
@@ -79,7 +80,7 @@ class ExtractTextCommandTest extends TestCase
      */
     public function testToArrayWithAllOptions(ExtractTextCommand $command): void
     {
-        $tempFile = sys_get_temp_dir().'/test.txt';
+        $tempFile = sys_get_temp_dir() . '/test.txt';
 
         $command
             ->inputFile(__FILE__)
@@ -92,8 +93,7 @@ class ExtractTextCommandTest extends TestCase
             ->ignoreBeads()
             ->password('testPassword')
             ->sort()
-            ->startPage(3)
-        ;
+            ->startPage(3);
 
         $result = $command->toArray();
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor configVersion="3"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://www.phpdoc.org" xsi:noNamespaceSchemaLocation="https://docs.phpdoc.org/latest/phpdoc.xsd">
+    <paths>
+        <output>docs/api</output>
+        <cache>docs/cache</cache>
+    </paths>
+    <version number="latest">
+        <api>
+            <source dsn=".">
+                <path>src</path>
+            </source>
+            <default-package-name>PHP-PDFBox</default-package-name>
+            <include-source>true</include-source>
+            <markers>
+                <!--1 or more repetitions:-->
+                <!--To use these markers, they need to be in a single line comment "// TODO: Move this stuff" -->
+                <marker>TODO</marker>
+                <marker>FIXME</marker>
+                <marker>NOTE</marker>
+            </markers>
+        </api>
+    </version>
+</phpdocumentor>

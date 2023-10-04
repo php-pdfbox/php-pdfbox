@@ -1,4 +1,4 @@
-docs
+docs/cache
 vendor
 composer.lock
 phpunit.xml
