@@ -14,7 +14,7 @@ It is recommended to install PHP-PDFBox through
 ```json
 {
     "require": {
-        "php-pdfbox/php-pdfbox": "^1.0"
+        "php-pdfbox/php-pdfbox": "^2.0"
     }
 }
 ```
