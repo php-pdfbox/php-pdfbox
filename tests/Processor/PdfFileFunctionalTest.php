@@ -39,7 +39,7 @@ class PdfFileFunctionalTest extends TestCase
 
         $pdfFile = new PdfFile(
             Pdfbox::create(
-                $this->prophesize(LoggerInterface::class)->reveal(),
+                $this->createMock(LoggerInterface::class),
                 $java,
                 $this->getJarFilePath()
             )

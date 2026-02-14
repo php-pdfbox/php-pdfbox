@@ -18,6 +18,8 @@ use Pdfbox\Exception\FileNotFoundException;
 
 /**
  * PDF file.
+ *
+ * Do not pass untrusted paths to toText() or toHtml() without validating and canonicalizing (e.g. restrict to a known directory) to avoid path traversal and arbitrary file read/write.
  */
 class PdfFile
 {

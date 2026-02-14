@@ -19,7 +19,6 @@ use Pdfbox\Exception\FileNotFoundException;
 use Pdfbox\Processor\PdfFile;
 use Pdfbox\Test\PdfFileTrait;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * PdfFile test.
@@ -35,27 +34,18 @@ class PdfFileTest extends TestCase
         $this->expectException(FileNotFoundException::class);
 
         $cmd = new ExtractTextCommand();
+        $pdfbox = $this->createPdfbox($cmd, false);
 
-        $pdfbox = $this->createPdfbox();
-        $pdfbox->extractText()
-            ->willReturn($cmd);
-
-        $pdfFile = new PdfFile($pdfbox->reveal());
+        $pdfFile = new PdfFile($pdfbox);
         $pdfFile->toText('/path/to/nowhere');
     }
 
     public function testToText(): void
     {
         $cmd = new ExtractTextCommand();
+        $pdfbox = $this->createPdfbox($cmd);
 
-        $pdfbox = $this->createPdfbox();
-        $pdfbox->extractText()
-            ->willReturn($cmd);
-        $pdfbox->command($cmd)
-            ->shouldBeCalled()
-            ->willReturn('testContent');
-
-        $pdfFile = new PdfFile($pdfbox->reveal());
+        $pdfFile = new PdfFile($pdfbox);
         $text = $pdfFile->toText($this->getPdfFilePath());
 
         $this->assertSame('testContent', $text);
@@ -65,17 +55,11 @@ class PdfFileTest extends TestCase
     public function testToTextWithOutfile(): void
     {
         $cmd = new ExtractTextCommand();
-
-        $pdfbox = $this->createPdfbox();
-        $pdfbox->extractText()
-            ->willReturn($cmd);
-        $pdfbox->command($cmd)
-            ->shouldBeCalled()
-            ->willReturn('testContent');
+        $pdfbox = $this->createPdfbox($cmd);
 
         $outFile = 'out.text';
 
-        $pdfFile = new PdfFile($pdfbox->reveal());
+        $pdfFile = new PdfFile($pdfbox);
         $pdfFile->toText($this->getPdfFilePath(), $outFile);
 
         $this->assertContains($outFile, $cmd->toArray());
@@ -86,26 +70,18 @@ class PdfFileTest extends TestCase
         $this->expectException(FileNotFoundException::class);
 
         $cmd = new ExtractTextCommand();
+        $pdfbox = $this->createPdfbox($cmd, false);
 
-        $pdfbox = $this->createPdfbox();
-        $pdfbox->extractText()->willReturn($cmd);
-
-        $pdfFile = new PdfFile($pdfbox->reveal());
+        $pdfFile = new PdfFile($pdfbox);
         $pdfFile->toHtml('/path/to/nowhere');
     }
 
     public function testToHtml(): void
     {
         $cmd = new ExtractTextCommand();
+        $pdfbox = $this->createPdfbox($cmd);
 
-        $pdfbox = $this->createPdfbox();
-        $pdfbox->extractText()
-            ->willReturn($cmd);
-        $pdfbox->command($cmd)
-            ->shouldBeCalled()
-            ->willReturn('testContent');
-
-        $pdfFile = new PdfFile($pdfbox->reveal());
+        $pdfFile = new PdfFile($pdfbox);
         $pdfFile->toHtml($this->getPdfFilePath());
 
         $this->assertContains('-console', $cmd->toArray());
@@ -114,27 +90,28 @@ class PdfFileTest extends TestCase
     public function testToHtmlWithOutfile(): void
     {
         $cmd = new ExtractTextCommand();
-
-        $pdfbox = $this->createPdfbox();
-        $pdfbox->extractText()
-            ->willReturn($cmd);
-        $pdfbox->command($cmd)
-            ->shouldBeCalled()
-            ->willReturn('testContent');
+        $pdfbox = $this->createPdfbox($cmd);
 
         $outFile = 'out.html';
 
-        $pdfFile = new PdfFile($pdfbox->reveal());
+        $pdfFile = new PdfFile($pdfbox);
         $pdfFile->toHtml($this->getPdfFilePath(), $outFile);
 
         $this->assertContains($outFile, $cmd->toArray());
     }
 
-    /**
-     * @return Pdfbox|ObjectProphecy
-     */
-    private function createPdfbox(): ObjectProphecy
+    private function createPdfbox(ExtractTextCommand $cmd, bool $expectCommand = true, string $commandReturn = 'testContent'): Pdfbox
     {
-        return $this->prophesize(Pdfbox::class);
+        $pdfbox = $this->createMock(Pdfbox::class);
+        $pdfbox->method('extractText')->willReturn($cmd);
+
+        if ($expectCommand) {
+            $pdfbox->expects($this->once())
+                ->method('command')
+                ->with($this->identicalTo($cmd))
+                ->willReturn($commandReturn);
+        }
+
+        return $pdfbox;
     }
 }

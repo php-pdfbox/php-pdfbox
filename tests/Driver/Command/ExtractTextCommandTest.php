@@ -97,17 +97,21 @@ class ExtractTextCommandTest extends TestCase
 
         $result = $command->toArray();
 
-        $this->assertEquals([
+        $this->assertSame([
             'ExtractText',
             '-console',
             '-debug',
-            '-encoding' => 'testEncoding',
-            '-endPage' => '5',
+            '-encoding',
+            'testEncoding',
+            '-endPage',
+            '5',
             '-html',
             '-ignoreBeads',
-            '-password' => 'testPassword',
+            '-password',
+            'testPassword',
             '-sort',
-            '-startPage' => '3',
+            '-startPage',
+            '3',
             __FILE__,
             $tempFile,
         ], $result);

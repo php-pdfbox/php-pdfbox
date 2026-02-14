@@ -113,7 +113,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\Pdfbox\\Driver\\Pdfbox\u003A\u003Acreate\u0028\u0029",
             "name": "create",
-            "summary": "Creates\u0020a\u0020Pdftotext\u0020driver.",
+            "summary": "Creates\u0020a\u0020Pdfbox\u0020driver.",
             "url": "classes/Pdfbox-Driver-Pdfbox.html#method_create"
         },                {
             "fqsen": "\\Pdfbox\\Driver\\Pdfbox\u003A\u003Acommand\u0028\u0029",
@@ -131,10 +131,35 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/Pdfbox-Driver-Pdfbox.html#method_run"
         },                {
+            "fqsen": "\\Pdfbox\\Driver\\Pdfbox\u003A\u003AvalidateJvmOptions\u0028\u0029",
+            "name": "validateJvmOptions",
+            "summary": "Validates\u0020and\u0020normalizes\u0020JVM\u0020options\u0020to\u0020a\u0020flat\u0020list\u0020of\u0020command\u002Dline\u0020arguments.",
+            "url": "classes/Pdfbox-Driver-Pdfbox.html#method_validateJvmOptions"
+        },                {
             "fqsen": "\\Pdfbox\\Driver\\Pdfbox\u003A\u003AdoExecutionFailure\u0028\u0029",
             "name": "doExecutionFailure",
             "summary": "",
             "url": "classes/Pdfbox-Driver-Pdfbox.html#method_doExecutionFailure"
+        },                {
+            "fqsen": "\\Pdfbox\\Driver\\Pdfbox\u003A\u003ADEFAULT_XMS",
+            "name": "DEFAULT_XMS",
+            "summary": "Default\u0020minimum\u0020heap\u0020size\u0020\u0028initial\u0020and\u0020minimum\u0029.",
+            "url": "classes/Pdfbox-Driver-Pdfbox.html#constant_DEFAULT_XMS"
+        },                {
+            "fqsen": "\\Pdfbox\\Driver\\Pdfbox\u003A\u003ADEFAULT_XMX",
+            "name": "DEFAULT_XMX",
+            "summary": "Default\u0020maximum\u0020heap\u0020size.",
+            "url": "classes/Pdfbox-Driver-Pdfbox.html#constant_DEFAULT_XMX"
+        },                {
+            "fqsen": "\\Pdfbox\\Driver\\Pdfbox\u003A\u003AALLOWED_JVM_OPTION_NAMES",
+            "name": "ALLOWED_JVM_OPTION_NAMES",
+            "summary": "JVM\u0020option\u0020names\u0020permitted\u0020as\u0020memory\u002Drelated\u0020Extra\u0020Options\u0020for\u0020Java.",
+            "url": "classes/Pdfbox-Driver-Pdfbox.html#constant_ALLOWED_JVM_OPTION_NAMES"
+        },                {
+            "fqsen": "\\Pdfbox\\Driver\\Pdfbox\u003A\u003AJVM_OPTION_VALUE_PATTERN",
+            "name": "JVM_OPTION_VALUE_PATTERN",
+            "summary": "Pattern\u0020for\u0020a\u0020valid\u0020option\u0020value\u0020\u0028digits\u0020with\u0020optional\u0020k\/m\/g\u0020suffix\u0029.",
+            "url": "classes/Pdfbox-Driver-Pdfbox.html#constant_JVM_OPTION_VALUE_PATTERN"
         },                {
             "fqsen": "\\Pdfbox\\Driver\\Pdfbox\u003A\u003A\u0024java",
             "name": "java",
@@ -150,6 +175,11 @@ Search.appendIndex(
             "name": "logger",
             "summary": "",
             "url": "classes/Pdfbox-Driver-Pdfbox.html#property_logger"
+        },                {
+            "fqsen": "\\Pdfbox\\Driver\\Pdfbox\u003A\u003A\u0024jvmOptions",
+            "name": "jvmOptions",
+            "summary": "",
+            "url": "classes/Pdfbox-Driver-Pdfbox.html#property_jvmOptions"
         },                {
             "fqsen": "\\Pdfbox\\Exception\\ExceptionInterface",
             "name": "ExceptionInterface",

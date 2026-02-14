@@ -34,7 +34,7 @@ class ExtractTextCommand implements CommandInterface
     }
 
     /**
-     * @return mixed[]
+     * @return string[] Flat list of command-line arguments (option names and values in order).
      */
     public function toArray(): array
     {
@@ -42,19 +42,31 @@ class ExtractTextCommand implements CommandInterface
             throw new InputFileMissingException('Input file missing.');
         }
 
-        $data = $this->options;
-        array_push($data, $this->inputFile);
-
+        $result = [];
+        foreach ($this->options as $k => $v) {
+            if (!is_int($k)) {
+                continue;
+            }
+            if (isset($this->options[$v]) && $this->options[$v] !== $v && is_string($this->options[$v])) {
+                $result[] = $v;
+                $result[] = $this->options[$v];
+            } else {
+                $result[] = $v;
+            }
+        }
+        $result[] = $this->inputFile;
         if ($this->outputFile) {
-            array_push($data, $this->outputFile);
+            $result[] = $this->outputFile;
         }
 
-        return $data;
+        return $result;
     }
 
     /**
      * Set <input-file>.
      * The PDF document to use.
+     *
+     * Do not pass untrusted paths without validating and canonicalizing (e.g. restrict to a known directory) to avoid path traversal.
      */
     public function inputFile(string $inputFile): self
     {
@@ -70,6 +82,8 @@ class ExtractTextCommand implements CommandInterface
     /**
      * Set <output-text-file>.
      * The file to write the text to.
+     *
+     * Do not pass untrusted paths without validating and canonicalizing (e.g. restrict to a known directory) to avoid path traversal and arbitrary file write.
      */
     public function outputFile(string $outputFile): self
     {
